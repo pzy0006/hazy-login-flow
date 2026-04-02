@@ -58,7 +58,7 @@ const ParticleBackground = () => {
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 120) {
           ctx.beginPath();
-          ctx.strokeStyle = `hsla(220, 70%, 60%, ${0.15 * (1 - dist / 120)})`;
+          ctx.strokeStyle = `hsla(220, 60%, 50%, ${0.1 * (1 - dist / 120)})`;
           ctx.lineWidth = 0.5;
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(other.x, other.y);
