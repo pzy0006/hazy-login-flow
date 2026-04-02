@@ -63,27 +63,37 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        login: "0 8px 32px -8px hsl(var(--primary) / 0.15), 0 0 0 1px hsl(var(--border) / 0.1)",
+      },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "float-slow": {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "50%": { transform: "translate(30px, -30px)" },
+        },
+        "float-medium": {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "50%": { transform: "translate(-20px, 20px)" },
+        },
+        "float-fast": {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "50%": { transform: "translate(15px, -15px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float-slow": "float-slow 8s ease-in-out infinite",
+        "float-medium": "float-medium 6s ease-in-out infinite",
+        "float-fast": "float-fast 5s ease-in-out infinite",
       },
     },
   },
