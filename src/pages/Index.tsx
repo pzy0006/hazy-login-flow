@@ -1,14 +1,12 @@
-import ParticleBackground from "@/components/ParticleBackground";
-import LoginForm from "@/components/LoginForm";
+import HeroSection from "@/components/HeroSection";
+import SocialProofSection from "@/components/SocialProofSection";
 
 const Index = () => {
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4">
-      <ParticleBackground />
-      <div className="relative z-50">
-        <LoginForm />
-      </div>
-    </div>
+    <>
+      <HeroSection />
+      <SocialProofSection />
+    </>
   );
 };
 
