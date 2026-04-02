@@ -1,16 +1,6 @@
 import { useEffect, useRef } from "react";
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  radius: number;
-  color: string;
-  alpha: number;
-}
-
-const ParticleBackground = () => {
+const LiquidWaveBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -20,85 +10,62 @@ const ParticleBackground = () => {
     if (!ctx) return;
 
     let animationId: number;
-    let particles: Particle[] = [];
-
-    const colors = [
-      "hsla(220, 80%, 65%, 0.5)",
-      "hsla(260, 60%, 60%, 0.4)",
-      "hsla(200, 80%, 55%, 0.4)",
-      "hsla(180, 60%, 50%, 0.3)",
-      "hsla(240, 50%, 70%, 0.3)",
-    ];
+    let time = 0;
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
 
-    const createParticles = () => {
-      particles = [];
-      const count = Math.floor((canvas.width * canvas.height) / 5000);
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          radius: Math.random() * 2 + 0.5,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: Math.random() * 0.5 + 0.2,
-        });
-      }
-    };
+    const drawWave = (
+      yBase: number,
+      amplitude: number,
+      frequency: number,
+      speed: number,
+      color: string,
+      phase: number
+    ) => {
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
 
-    const drawConnections = (p: Particle) => {
-      for (const other of particles) {
-        const dx = p.x - other.x;
-        const dy = p.y - other.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          ctx.beginPath();
-          ctx.strokeStyle = `hsla(220, 60%, 50%, ${0.1 * (1 - dist / 120)})`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(other.x, other.y);
-          ctx.stroke();
-        }
+      for (let x = 0; x <= canvas.width; x += 2) {
+        const y =
+          yBase +
+          Math.sin(x * frequency + time * speed + phase) * amplitude +
+          Math.sin(x * frequency * 0.5 + time * speed * 0.7 + phase * 1.3) * amplitude * 0.6 +
+          Math.cos(x * frequency * 0.3 + time * speed * 0.4 + phase * 0.7) * amplitude * 0.3;
+        ctx.lineTo(x, y);
       }
+
+      ctx.lineTo(canvas.width, canvas.height);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
     };
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      time += 0.008;
 
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
+      const h = canvas.height;
 
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        drawConnections(p);
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-      }
+      // Deep layered waves from back to front
+      drawWave(h * 0.35, 40, 0.003, 0.4, "hsla(260, 70%, 15%, 0.15)", 0);
+      drawWave(h * 0.42, 35, 0.004, 0.5, "hsla(220, 80%, 20%, 0.12)", 1);
+      drawWave(h * 0.50, 30, 0.005, 0.6, "hsla(200, 70%, 18%, 0.10)", 2);
+      drawWave(h * 0.55, 25, 0.004, 0.7, "hsla(240, 60%, 22%, 0.13)", 3);
+      drawWave(h * 0.62, 35, 0.003, 0.45, "hsla(220, 80%, 25%, 0.10)", 4);
+      drawWave(h * 0.70, 28, 0.005, 0.55, "hsla(260, 50%, 20%, 0.12)", 5);
+      drawWave(h * 0.78, 22, 0.006, 0.65, "hsla(200, 60%, 15%, 0.14)", 6);
+      drawWave(h * 0.85, 18, 0.004, 0.75, "hsla(230, 70%, 12%, 0.18)", 7);
 
       animationId = requestAnimationFrame(animate);
     };
 
     resize();
-    createParticles();
     animate();
 
-    window.addEventListener("resize", () => {
-      resize();
-      createParticles();
-    });
-
+    window.addEventListener("resize", resize);
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resize);
@@ -107,21 +74,17 @@ const ParticleBackground = () => {
 
   return (
     <div className="fixed inset-0 -z-10 bg-background">
-      {/* Deep space gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--particle-1)/0.08)] via-transparent to-[hsl(var(--particle-2)/0.06)]" />
-      
-      {/* Canvas particles */}
+      {/* Deep space radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--particle-1)/0.08)_0%,_transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_hsl(var(--particle-2)/0.06)_0%,_transparent_50%)]" />
+
+      {/* Liquid wave canvas */}
       <canvas ref={canvasRef} className="absolute inset-0" />
-      
-      {/* Subtle blur overlay */}
-      <div className="absolute inset-0 backdrop-blur-[0.5px]" />
-      
-      {/* Nebula orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[hsl(var(--particle-1)/0.05)] blur-3xl animate-float-slow" />
-      <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-[hsl(var(--particle-2)/0.04)] blur-3xl animate-float-medium" />
-      <div className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full bg-[hsl(var(--particle-3)/0.03)] blur-3xl animate-float-fast" />
+
+      {/* Soft blur overlay for depth */}
+      <div className="absolute inset-0 backdrop-blur-[1px]" />
     </div>
   );
 };
 
-export default ParticleBackground;
+export default LiquidWaveBackground;
