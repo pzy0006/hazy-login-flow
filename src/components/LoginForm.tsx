@@ -16,7 +16,7 @@ const LoginForm = () => {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl p-8 shadow-login">
+      <div className="bg-card/60 backdrop-blur-xl border border-border/30 rounded-2xl p-8 shadow-login">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 mb-4">
             <Lock className="w-7 h-7 text-primary" />
