@@ -42,8 +42,8 @@ const ParticleBackground = () => {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.8,
-          vy: (Math.random() - 0.5) * 0.8,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
           radius: Math.random() * 3 + 1,
           color: colors[Math.floor(Math.random() * colors.length)],
           alpha: Math.random() * 0.5 + 0.2,
