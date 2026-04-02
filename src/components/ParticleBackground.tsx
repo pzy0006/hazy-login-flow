@@ -106,20 +106,20 @@ const ParticleBackground = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-10">
-      {/* Gradient base layer */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--particle-1)/0.15)] via-[hsl(var(--particle-2)/0.1)] to-[hsl(var(--particle-3)/0.15)]" />
+    <div className="fixed inset-0 -z-10 bg-background">
+      {/* Deep space gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--particle-1)/0.08)] via-transparent to-[hsl(var(--particle-2)/0.06)]" />
       
       {/* Canvas particles */}
       <canvas ref={canvasRef} className="absolute inset-0" />
       
-      {/* Blur overlay */}
-      <div className="absolute inset-0 backdrop-blur-[1px]" />
+      {/* Subtle blur overlay */}
+      <div className="absolute inset-0 backdrop-blur-[0.5px]" />
       
-      {/* Floating orbs for depth */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[hsl(var(--particle-1)/0.08)] blur-3xl animate-float-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-[hsl(var(--particle-2)/0.08)] blur-3xl animate-float-medium" />
-      <div className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full bg-[hsl(var(--particle-3)/0.06)] blur-3xl animate-float-fast" />
+      {/* Nebula orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[hsl(var(--particle-1)/0.05)] blur-3xl animate-float-slow" />
+      <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-[hsl(var(--particle-2)/0.04)] blur-3xl animate-float-medium" />
+      <div className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full bg-[hsl(var(--particle-3)/0.03)] blur-3xl animate-float-fast" />
     </div>
   );
 };
